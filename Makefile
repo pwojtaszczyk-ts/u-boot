@@ -1481,27 +1481,6 @@ OBJCOPYFLAGS_u-boot-with-spl.bin = -I binary -O binary \
 u-boot-with-spl.bin: $(SPL_IMAGE) $(SPL_PAYLOAD) FORCE
 	$(call if_changed,pad_cat)
 
-ifeq ($(CONFIG_ARCH_LPC32XX)$(CONFIG_SPL),yy)
-MKIMAGEFLAGS_lpc32xx-spl.img = -T lpc32xximage -a $(CONFIG_SPL_TEXT_BASE)
-
-lpc32xx-spl.img: spl/u-boot-spl.bin FORCE
-	$(call if_changed,mkimage)
-
-OBJCOPYFLAGS_lpc32xx-boot-0.bin = -I binary -O binary --pad-to=$(CONFIG_SPL_PAD_TO)
-
-lpc32xx-boot-0.bin: lpc32xx-spl.img FORCE
-	$(call if_changed,objcopy)
-
-OBJCOPYFLAGS_lpc32xx-boot-1.bin = -I binary -O binary --pad-to=$(CONFIG_SPL_PAD_TO)
-
-lpc32xx-boot-1.bin: lpc32xx-spl.img FORCE
-	$(call if_changed,objcopy)
-
-lpc32xx-full.bin: lpc32xx-boot-0.bin lpc32xx-boot-1.bin u-boot.img FORCE
-	$(call if_changed,cat)
-
-endif
-
 OBJCOPYFLAGS_u-boot-with-tpl.bin = -I binary -O binary \
 				   --pad-to=$(CONFIG_TPL_PAD_TO)
 tpl/u-boot-with-tpl.bin: tpl/u-boot-tpl.bin u-boot.bin FORCE
